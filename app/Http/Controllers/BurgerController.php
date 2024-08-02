@@ -28,12 +28,13 @@ class BurgerController extends Controller
             'nom' => 'required|max:20',
             'prix' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validation pour le fichier image
+            'description' => 'nullable|string',
         ]);
 
         // Traitement de l'image
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $nomImage = time() . '.' . $image->getClientOriginalExtension();
+            $nomImage = $image->getClientOriginalName(); // Utilisez le nom original de l'image
             $chemin = public_path('/assets/images/burgers');
 
             // Vérifiez si le répertoire existe, sinon créez-le
@@ -58,13 +59,17 @@ class BurgerController extends Controller
         return response()->json($burger, 201);
     }
 
+
+
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $buerger = Burger::find($id);
+        return response()->json($buerger, 200);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -73,18 +78,19 @@ class BurgerController extends Controller
     {
         try {
             $burger = Burger::findOrFail($id);
-            $request->validate(
-                [
-                    'nom' => 'required|max:20',
-                    'prix' => 'required',
-                ]
-            );
+            $request->validate([
+                'nom' => 'required|max:20',
+                'prix' => 'required',
+                'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validation pour le fichier image
+            ]);
 
             // Traitement de l'image
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $nomImage = time() . '.' . $image->getClientOriginalExtension();
+                $nomImage = $image->getClientOriginalName(); // Utilisez le nom original de l'image
                 $chemin = public_path('assets/images/burgers');
+
+                // Déplacez l'image dans le répertoire
                 $image->move($chemin, $nomImage);
                 $burger->image = $nomImage;
             }
@@ -97,11 +103,11 @@ class BurgerController extends Controller
             $burger->save();
 
             return response()->json($burger, 200, ['message' => 'Modification avec succès!']);
-
         } catch (Exception $ex) {
             return response()->json(['error' => 'Burger not found'], 404);
         }
     }
+
 
     /***
      * @param Request $request

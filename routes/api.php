@@ -34,12 +34,12 @@ Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->
  * BURGERS CRUD API
  */
 Route::get('index',[\App\Http\Controllers\BurgerController::class,'index']);
+Route::get('show/{id}',[\App\Http\Controllers\BurgerController::class,'show']);
 Route::post('create',[\App\Http\Controllers\BurgerController::class,'store']);
 Route::get('recettes-journalieres',[\App\Http\Controllers\BurgerController::class,'recettesJournalieres']);
 Route::put('update/{id}',[\App\Http\Controllers\BurgerController::class,'update']);
 Route::post('delete/{id}',[\App\Http\Controllers\BurgerController::class,'delete']);
 Route::post('search',[\App\Http\Controllers\BurgerController::class,'search']);
-Route::get('burger/{id}',[\App\Http\Controllers\BurgerController::class,'show']);
 Route::post('archiver/{id}',[\App\Http\Controllers\BurgerController::class,'archiver']);
 Route::post('desarchiver/{id}',[\App\Http\Controllers\BurgerController::class,'desarchiver']);
 

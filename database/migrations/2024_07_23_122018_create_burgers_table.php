@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('nom');
             $table->string('prix');
-            $table->string('image',300);
-            $table->string('description');
+            $table->string('image');
+            $table->string('description')->nullable();
             $table->integer('archiver');
             $table->timestamps();
         });
+
     }
 
     /**

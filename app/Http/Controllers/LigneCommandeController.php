@@ -15,9 +15,18 @@ class LigneCommandeController extends Controller
      * LISTE DES COMMANDES
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(){
-        $commandes = LigneCommande::where('archiver', 0)->get();
-        return response()->json($commandes,200);
+    public function index()
+    {
+        $today = Carbon::today();
+
+        $commandes = DB::table('ligne_commandes')
+            ->join('burgers', 'ligne_commandes.id_burger', '=', 'burgers.id')
+            ->where('ligne_commandes.archiver', 0)
+            ->whereDate('ligne_commandes.created_at', $today)
+            ->select('ligne_commandes.*', 'burgers.nom as burger_nom', 'burgers.prix as burger_prix', 'burgers.image as burger_image')
+            ->get();
+
+        return response()->json($commandes, 200);
     }
 
     /***

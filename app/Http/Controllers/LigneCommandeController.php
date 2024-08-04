@@ -194,11 +194,20 @@ class LigneCommandeController extends Controller
      * @return mixed
      * COMMANDES EN COURS
      */
-    public function commandesEnCours(){
+    public function commandesEnCours()
+    {
         $aujourdHui = Carbon::today();
 
-        $commandesEnCours = LigneCommande::where('etat', 'WAIT')
-            ->whereDate('updated_at', $aujourdHui)
+        $commandesEnCours = DB::table('ligne_commandes')
+            ->join('burgers', 'ligne_commandes.id_burger', '=', 'burgers.id')
+            ->where('ligne_commandes.etat', 'WAIT')
+            ->whereDate('ligne_commandes.updated_at', $aujourdHui)
+            ->select(
+                'ligne_commandes.*',
+                'burgers.nom as burger_nom',
+                'burgers.prix as burger_prix',
+                'burgers.image as burger_image'
+            )
             ->get();
 
         return response()->json($commandesEnCours, 200);
@@ -211,21 +220,37 @@ class LigneCommandeController extends Controller
     public function commandesValidees(){
         $aujourdHui = Carbon::today();
 
-        $commandesValidees = LigneCommande::where('etat', 'FINISH')
-            ->whereDate('updated_at', $aujourdHui)
+        $commandesEnCours = DB::table('ligne_commandes')
+            ->join('burgers', 'ligne_commandes.id_burger', '=', 'burgers.id')
+            ->where('ligne_commandes.etat', 'FINISH')
+            ->whereDate('ligne_commandes.updated_at', $aujourdHui)
+            ->select(
+                'ligne_commandes.*',
+                'burgers.nom as burger_nom',
+                'burgers.prix as burger_prix',
+                'burgers.image as burger_image'
+            )
             ->get();
 
-        return response()->json($commandesValidees, 200);
+        return response()->json($commandesEnCours, 200);
     }
 
     public function commandesAnnulees(){
         $aujourdHui = Carbon::today();
 
-        $commandesAnnulees = LigneCommande::where('etat', 'FAILED')
-            ->whereDate('updated_at', $aujourdHui)
+        $commandesEnCours = DB::table('ligne_commandes')
+            ->join('burgers', 'ligne_commandes.id_burger', '=', 'burgers.id')
+            ->where('ligne_commandes.etat', 'FAILED')
+            ->whereDate('ligne_commandes.updated_at', $aujourdHui)
+            ->select(
+                'ligne_commandes.*',
+                'burgers.nom as burger_nom',
+                'burgers.prix as burger_prix',
+                'burgers.image as burger_image'
+            )
             ->get();
 
-        return response()->json($commandesAnnulees, 200);
+        return response()->json($commandesEnCours, 200);
     }
 
 }

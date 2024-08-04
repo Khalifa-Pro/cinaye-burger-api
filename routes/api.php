@@ -61,4 +61,5 @@ Route::post('annuler/{id}',[\App\Http\Controllers\LigneCommandeController::class
  * PAIEMENT
  */
 Route::post('payer/{id}',[\App\Http\Controllers\PaiementController::class,'payer']);
-
+Route::get('paiements',[\App\Http\Controllers\PaiementController::class,'paiements']);
+Route::get('bilan-journalier',[\App\Http\Controllers\PaiementController::class,'bilan']);

@@ -253,4 +253,44 @@ class LigneCommandeController extends Controller
         return response()->json($commandesEnCours, 200);
     }
 
+    public function nbCommandesValidees()
+    {
+        $aujourdHui = Carbon::today();
+
+        $nbCommandesValidees = DB::table('ligne_commandes')
+            ->where('ligne_commandes.etat', 'FINISH')
+            ->whereDate('ligne_commandes.updated_at', $aujourdHui)
+            ->select(DB::raw('count(*) as nbV'))
+            ->first(); // Utilisation de first() pour récupérer le premier résultat directement
+
+        return response()->json(['nombre_commandes_validees' => $nbCommandesValidees->nbV], 200);
+    }
+
+    public function nbCommandesEnCours()
+    {
+        $aujourdHui = Carbon::today();
+
+        $nbCommandesEnCours = DB::table('ligne_commandes')
+            ->where('ligne_commandes.etat', 'WAIT')
+            ->whereDate('ligne_commandes.updated_at', $aujourdHui)
+            ->select(DB::raw('count(*) as nbC'))
+            ->first(); // Utilisation de first() pour récupérer le premier résultat directement
+
+        return response()->json(['nombre_commandes_en_cours' => $nbCommandesEnCours->nbC], 200);
+    }
+
+
+    public function nbCommandesAnnulees()
+    {
+        $aujourdHui = Carbon::today();
+
+        $nbCommandesAnnulees = DB::table('ligne_commandes')
+            ->where('ligne_commandes.etat', 'FAILED')
+            ->whereDate('ligne_commandes.updated_at', $aujourdHui)
+            ->select(DB::raw('count(*) as nbA'))
+            ->first(); // Utilisation de first() pour récupérer le premier résultat directement
+
+        return response()->json(['nombre_commandes_annulees' => $nbCommandesAnnulees->nbA], 200);
+    }
+
 }

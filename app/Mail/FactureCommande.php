@@ -20,7 +20,7 @@ class FactureCommande extends Mailable
 
     public function build()
     {
-// Générer le PDF
+        // Générer le PDF
         $pdf = Pdf::loadView('factures.facture', ['ligneCommande' => $this->ligneCommande]);
 
         return $this->subject('Votre commande a été validée')

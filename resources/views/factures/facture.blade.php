@@ -68,7 +68,7 @@
                         </td>
 
                         <td>
-                            Commande #: {{ $ligneCommande->id }}<br>
+                            N° Commande: {{ $ligneCommande->id }}<br>
                             Créée le: {{ now()->format('d/m/Y') }}
                         </td>
                     </tr>

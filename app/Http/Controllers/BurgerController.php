@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Burger;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class BurgerController extends Controller
@@ -175,4 +176,20 @@ class BurgerController extends Controller
         $recettesJournaliere = Burger::whereDate('updated_at', $aujourdHui)->get();
         return response()->json($recettesJournaliere, 200);
     }
+
+    /***
+     * @return \Illuminate\Http\JsonResponse
+     * Nombre de recettes journalieres
+     */
+    public function nbRecettesJournalieres(){
+        $aujourdHui = \Illuminate\Support\Carbon::today();
+
+        $nbRecettesJounalieres = DB::table('burgers')
+            ->whereDate('burgers.updated_at', $aujourdHui)
+            ->select(DB::raw('count(*) as nbRJ'))
+            ->first(); // Utilisation de first() pour récupérer le premier résultat directement
+
+        return response()->json(['nombre_recettes_jounalieres' => $nbRecettesJounalieres->nbRJ], 200);
+    }
+
 }

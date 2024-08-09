@@ -39,6 +39,8 @@ Route::post('delete/{id}',[\App\Http\Controllers\BurgerController::class,'delete
 Route::post('search',[\App\Http\Controllers\BurgerController::class,'search']);
 Route::post('archiver/{id}',[\App\Http\Controllers\BurgerController::class,'archiver']);
 Route::post('desarchiver/{id}',[\App\Http\Controllers\BurgerController::class,'desarchiver']);
+Route::get('nombre-recettes-journalieres',[\App\Http\Controllers\BurgerController::class,'nbRecettesJournalieres']);
+
     /***
      * COMMANDES
      */
